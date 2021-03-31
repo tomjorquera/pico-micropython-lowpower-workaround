@@ -36,6 +36,21 @@ lowpower.dormant_until_pin(DORMANT_PIN)
 print("after dormant") # only print after receiving signal on Pin number DORMANT_PIN
 ```
 
+You can also sleep on multiple pins using `dormant_until_pins`
+
+Example:
+
+``` python
+import lowpower
+
+DORMANT_PIN1 = 16
+DORMANT_PIN2 = 17
+
+print("before dormant")
+lowpower.dormant_until_pins([DORMANT_PIN1, DORMANT_PIN2])
+print("after dormant") # only print after receiving signal on one of the pins
+```
+
 ### Lightsleep mode
 
 ``` python

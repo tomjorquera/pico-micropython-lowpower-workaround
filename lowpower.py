@@ -26,7 +26,7 @@ def gpio_acknowledge_irq(gpio, events):
     _write_bits(REG_IO_BANK0_BASE + REG_IO_BANK0_INTR0 + int(gpio / 8) * 4,
                 events << 4 * (gpio % 8))
 
-def dormant_until_pin(gpio_pin, edge=True, high=True):
+def dormant_until_pins(gpio_pins, edge=True, high=True):
     low = not high
     level = not edge
 
@@ -39,10 +39,15 @@ def dormant_until_pin(gpio_pin, edge=True, high=True):
     if edge and high:
         event = IO_BANK0_DORMANT_WAKE_INTE0_GPIO0_EDGE_HIGH_BITS
 
-    # Enable Wake-up from GPIO IRQ
-    gpio_acknowledge_irq(gpio_pin, event)
-    en_reg = REG_IO_BANK0_BASE + REG_IO_BANK0_DORMANT_WAKE_INTE0 + int(gpio_pin / 8) * 4
-    _write_bits(en_reg, event << 4 * (gpio_pin % 8))
+    events = 0
+    for gpio_pin in gpio_pins:
+        gpio_acknowledge_irq(gpio_pin, event)
+
+        # Enable Wake-up from GPIO IRQ
+        gpio_acknowledge_irq(gpio_pin, event)
+        en_reg = REG_IO_BANK0_BASE + REG_IO_BANK0_DORMANT_WAKE_INTE0 + int(gpio_pin / 8) * 4
+        events += event << 4 * (gpio_pin % 8)
+    _write_bits(en_reg, events)
 
     # Go dormant
     _write_bits(REG_XOSC_BASE + REG_XOSC_DORMANT,
@@ -51,7 +56,11 @@ def dormant_until_pin(gpio_pin, edge=True, high=True):
     while not _read_bits(REG_XOSC_BASE + REG_XOSC_STATUS) & XOSC_STATUS_STABLE_BITS:
         pass
 
-    gpio_acknowledge_irq(gpio_pin, event)
+    for gpio_pin in gpio_pins:
+        gpio_acknowledge_irq(gpio_pin, event)
+
+def dormant_until_pin(gpio_pin, edge=True, high=True):
+    dormant_until_pins([gpio_pin], edge, high)
 
 @micropython.asm_thumb
 def lightsleep():
