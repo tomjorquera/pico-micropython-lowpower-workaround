@@ -77,6 +77,17 @@ lowpower.lightsleep()
 print("after lightsleep") # only print after receiving signal on any GPIO pin
 ```
 
+## Power consumption
+
+Here are some experimental measurements of the pico current "consumption" under different regimes. You can reproduce these results using the `lowpower_example.py` (and a multimeter :smile:).
+
+| Regime      | Current (mA) |
+| ----------- | -----------: |
+| Active loop |          26  |
+| Sleep       |          22  |
+| Lightsleep  |          22  |
+| Dormant     |           1  |
+
 ## License
 
 This project and all its files are licensed under the LGPLv3.
