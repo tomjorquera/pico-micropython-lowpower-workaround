@@ -92,4 +92,14 @@ Here are some experimental measurements of the pico current "consumption" under 
 
 This project and all its files are licensed under the LGPLv3.
 
+The TL;DR version of the LGPL (and my intent) is that you can freely use this code in your project (be it Free software, open-source or closed-source) as long as:
+- you mention this project and a way to get it (a link to this repository will do)
+- you do not modify the code of this project
+
+If however you want to modify the code of this project, then you must either:
+- redistribute it under LGPL yourself
+- contribute it back to this project so that I (and anyone :) ) can benefit from your improvement
+
 See the file `LICENSE.txt` and [https://www.gnu.org/licenses/lgpl-3.0.html](https://www.gnu.org/licenses/lgpl-3.0.html) for more information.
+
+In case you want to use this project but have an issue regarding the licence, feel free to contact me to see if we can work something out :smile:
