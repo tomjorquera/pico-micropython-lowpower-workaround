@@ -51,6 +51,25 @@ lowpower.dormant_until_pins([DORMANT_PIN1, DORMANT_PIN2])
 print("after dormant") # only print after receiving signal on one of the pins
 ```
 
+The lower-level `dormant_with_modes` allows to set different wake-up conditions for each individual pin.
+
+For convenience, `lowpower` exposes the four possibles wake-up conditions as the constants `EDGE_LOW`, `EDGE_HIGH`, `LEVEL_LOW` and `LEVEL_HIGH`.
+
+Example:
+``` python
+import lowpower
+
+DORMANT_PIN1 = 16
+DORMANT_PIN2 = 17
+
+print("before dormant")
+lowpower.dormant_with_modes({
+        DORMANT_PIN1: (lowpower.EDGE_LOW | lowpower.EDGE_HIGH),
+        DORMANT_PIN2: lowpower.LEVEL_HIGH,
+})
+print("after dormant") # only print after receiving the correct signal on one of the pins
+```
+
 ### Lightsleep mode
 
 ``` python
