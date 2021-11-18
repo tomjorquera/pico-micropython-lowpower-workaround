@@ -19,14 +19,13 @@ from time import sleep
 
 import lowpower
 
-LED_BUSY = 25
-busy_led = Pin(LED_BUSY, Pin.OUT)
-
 DORMANT_PIN = 15
-
 btn = Pin(DORMANT_PIN, Pin.IN, Pin.PULL_DOWN)
 btn.irq(lambda e: print("button event!"),
         Pin.IRQ_RISING)
+
+LED_BUSY = 25
+busy_led = Pin(LED_BUSY, Pin.OUT)
 
 def blink_n_times(n):
     for _ in range(n):
