@@ -49,7 +49,7 @@ def gpio_acknowledge_irq(gpio, events):
                 events << 4 * (gpio % 8))
 
 def dormant_with_modes(pin_modes):
-    events = 0
+    registers_events = {}
     for gpio_pin, pin_mode in pin_modes.items():
         if not isinstance(gpio_pin, int) or gpio_pin < 0 or gpio_pin > 27:
             raise RuntimeError("Invalid value for pin " + str(gpio_pin) + " (expect int between 0 and 27)")
@@ -57,11 +57,17 @@ def dormant_with_modes(pin_modes):
         if not isinstance(pin_mode, int) or pin_mode < 1 or pin_mode > 15:
             raise RuntimeError("Invalid value for pin_mode " + str(pin_mode) + " (expect int between 0 and 15)")
 
-        # Enable Wake-up from GPIO IRQ
         gpio_acknowledge_irq(gpio_pin, pin_mode)
         en_reg = REG_IO_BANK0_BASE + REG_IO_BANK0_DORMANT_WAKE_INTE0 + int(gpio_pin / 8) * 4
-        events += pin_mode << 4 * (gpio_pin % 8)
-    _write_bits(en_reg, events)
+
+        if en_reg not in registers_events:
+            registers_events[en_reg] = 0
+
+        registers_events[en_reg] = registers_events[en_reg] + pin_mode << 4 * (gpio_pin % 8)
+
+    # Enable Wake-up from GPIO IRQ
+    for en_reg, events in registers_events.items():
+        _write_bits(en_reg, events)
 
     # Go dormant
     _write_bits(REG_XOSC_BASE + REG_XOSC_DORMANT,
