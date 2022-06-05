@@ -62,7 +62,6 @@ def dormant_with_modes(pin_modes):
 
         if en_reg not in registers_events:
             registers_events[en_reg] = 0
-        # Use bitwise addition instead of `+`
         registers_events[en_reg] = registers_events[en_reg] | ( pin_mode << 4 * (gpio_pin % 8) )
 
     # Enable Wake-up from GPIO IRQ
