@@ -64,7 +64,7 @@ def _write_bits(r0, r1):
 def dormant_with_modes(pin_modes):
     registers_events = {}
     for gpio_pin, pin_mode in pin_modes.items():
-        if not isinstance(gpio_pin, int) or gpio_pin < 0 or gpio_pin > 27:
+        if not isinstance(gpio_pin, int) or gpio_pin < 0 or gpio_pin > 28:
             raise RuntimeError(
                 "Invalid value for pin "
                 + str(gpio_pin)
